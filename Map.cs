@@ -16,11 +16,15 @@ namespace RogueSharp
       private bool[,] _isTransparent;
       private bool[,] _isWalkable;
       private bool[,] _isExplored;
+        /// <summary>
+        /// The Name of the map
+        /// </summary>
+        public string Name { get; set; }
 
-      /// <summary>
-      /// Constructor creates a new uninitialized Map
-      /// </summary>
-      public Map()
+        /// <summary>
+        /// Constructor creates a new uninitialized Map
+        /// </summary>
+        public Map()
       {
       }
 
@@ -29,9 +33,11 @@ namespace RogueSharp
       /// </summary>
       /// <param name="width">How many Cells wide the Map will be</param>
       /// <param name="height">How many Cells tall the Map will be</param>
-      public Map( int width, int height )
+      /// <param name="name">The Name of the map</param>
+      public Map( int width, int height, string name )
       {
          Initialize( width, height );
+            Name = name;
       }
 
       /// <summary>
@@ -207,7 +213,7 @@ namespace RogueSharp
       /// <returns>IMap deep copy of the original Map</returns>
       public IMap Clone()
       {
-         var map = new Map( Width, Height );
+         var map = new Map( Width, Height , Name + "_Clone");
          foreach (ICell cell in GetAllCells())
          {
             map.SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, cell.IsExplored );
