@@ -43,6 +43,8 @@ namespace RogueSharp
             IsExplored = false;
         }
 
+        #region Cell Properties
+
         /// <summary>
         /// Gets the X location of the Cell starting with 0 as the farthest left
         /// </summary>
@@ -154,29 +156,6 @@ namespace RogueSharp
         }
 
         /// <summary>
-        /// Does a check to make sure Cell Is not Transparant or Walkable
-        /// </summary>
-        /// <param name="b"></param>
-        public void SetIsMinable(bool b)
-        {
-            if (b == false)
-            {
-                IsMinable = false;
-            }
-            else
-            {
-                if (!IsTransparent && !IsWalkable)
-                {
-                    IsMinable = true;
-                }
-                else
-                {
-                    IsMinable = false;
-                }
-            }
-        }
-
-        /// <summary>
         /// If a Cell can be mined, 
         /// </summary>
         public bool IsMinable
@@ -185,6 +164,7 @@ namespace RogueSharp
 
             private set;
         }
+        #endregion
 
         /// <summary>
         /// Provides a simple visual representation of the Cell using the following symbols:
