@@ -8,31 +8,9 @@ namespace RogueSharp.DiceNotation.Terms
     /// <summary>
     /// The DiceTerm class represents a single "d" term in a DiceExpression
     /// </summary>
-    /// <remarks>
-    /// In the expression "2d6+5" the term "2d6" is a DiceTerm
-    /// </remarks>
+    /// <remarks>In the expression "2d6+5" the term "2d6" is a DiceTerm</remarks>
     public class DiceTerm : IDiceExpressionTerm
     {
-        /// <summary>
-        /// The number of dice
-        /// </summary>
-        public int Multiplicity { get; private set; }
-
-        /// <summary>
-        /// The number of sides per die
-        /// </summary>
-        public int Sides { get; private set; }
-
-        /// <summary>
-        /// The amount to multiply the final sum of the dice by
-        /// </summary>
-        public int Scalar { get; private set; }
-
-        /// <summary>
-        /// Sum this many dice with the highest values out of those rolled
-        /// </summary>
-        protected int Choose { get; private set; }
-
         /// <summary>
         /// Construct a new instance of the DiceTerm class using the specified values
         /// </summary>
@@ -74,6 +52,26 @@ namespace RogueSharp.DiceNotation.Terms
             Scalar = scalar;
             Choose = choose;
         }
+
+        /// <summary>
+        /// The number of dice
+        /// </summary>
+        public int Multiplicity { get; private set; }
+
+        /// <summary>
+        /// The amount to multiply the final sum of the dice by
+        /// </summary>
+        public int Scalar { get; private set; }
+
+        /// <summary>
+        /// The number of sides per die
+        /// </summary>
+        public int Sides { get; private set; }
+
+        /// <summary>
+        /// Sum this many dice with the highest values out of those rolled
+        /// </summary>
+        protected int Choose { get; private set; }
 
         /// <summary>
         /// Gets the TermResult for this DiceTerm which will include the random value rolled

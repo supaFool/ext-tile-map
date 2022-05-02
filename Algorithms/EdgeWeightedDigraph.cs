@@ -5,10 +5,12 @@ using System.Text;
 namespace RogueSharp.Algorithms
 {
     /// <summary>
-    /// The EdgeWeightedDigraph class represents an edge-weighted directed graph of vertices named 0 through V-1, where each directed edge
-    /// is of type DirectedEdge and has real-valued weight.
+    /// The EdgeWeightedDigraph class represents an edge-weighted directed graph of vertices named 0
+    /// through V-1, where each directed edge is of type DirectedEdge and has real-valued weight.
     /// </summary>
-    /// <seealso href="http://algs4.cs.princeton.edu/44sp/EdgeWeightedDigraph.java.html">EdgeWeightedDigraph class from Princeton University's Java Algorithms</seealso>
+    /// <seealso href="http://algs4.cs.princeton.edu/44sp/EdgeWeightedDigraph.java.html">
+    /// EdgeWeightedDigraph class from Princeton University's Java Algorithms
+    /// </seealso>
     public class EdgeWeightedDigraph
     {
         private readonly LinkedList<DirectedEdge>[] _adjacent;
@@ -29,14 +31,14 @@ namespace RogueSharp.Algorithms
         }
 
         /// <summary>
-        /// The number of vertices in the edge-weighted digraph
-        /// </summary>
-        public int NumberOfVertices { get; private set; }
-
-        /// <summary>
         /// The number of edges in the edge-weighted digraph
         /// </summary>
         public int NumberOfEdges { get; private set; }
+
+        /// <summary>
+        /// The number of vertices in the edge-weighted digraph
+        /// </summary>
+        public int NumberOfVertices { get; private set; }
 
         /// <summary>
         /// Adds the specified directed edge to the edge-weighted digraph
@@ -80,8 +82,8 @@ namespace RogueSharp.Algorithms
         }
 
         /// <summary>
-        /// Returns the number of directed edges incident from the specified vertex
-        /// This is known as the out-degree of the vertex
+        /// Returns the number of directed edges incident from the specified vertex This is known as
+        /// the out-degree of the vertex
         /// </summary>
         /// <param name="vertex">The vertex to find find the out-degree of</param>
         /// <returns>The number of directed edges incident from the specified vertex</returns>
@@ -93,9 +95,7 @@ namespace RogueSharp.Algorithms
         /// <summary>
         /// Returns a string that represents the current edge-weighted digraph
         /// </summary>
-        /// <returns>
-        /// A string that represents the current edge-weighted digraph
-        /// </returns>
+        /// <returns>A string that represents the current edge-weighted digraph</returns>
         public override string ToString()
         {
             var formattedString = new StringBuilder();

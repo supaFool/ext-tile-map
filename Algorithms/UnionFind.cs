@@ -3,8 +3,8 @@
 namespace RogueSharp.Algorithms
 {
     /// <summary>
-    /// The UnionFind class represents a union-find data type also known as the disjoint-sets data type.
-    /// It models connectivity among a set of N sites named 0 through N - 1.
+    /// The UnionFind class represents a union-find data type also known as the disjoint-sets data
+    /// type. It models connectivity among a set of N sites named 0 through N - 1.
     /// </summary>
     /// <seealso href="http://algs4.cs.princeton.edu/15uf/UF.java.html">
     /// UF class from Princeton University's Java Algorithms
@@ -41,6 +41,17 @@ namespace RogueSharp.Algorithms
         public int Count { get; private set; }
 
         /// <summary>
+        /// Are objects p and q in the same set?
+        /// </summary>
+        /// <param name="p">An integer representing one site</param>
+        /// <param name="q">An integer representing the other site</param>
+        /// <returns>true if the two sites p and q are in the same component; false otherwise</returns>
+        public bool Connected(int p, int q)
+        {
+            return Find(p) == Find(q);
+        }
+
+        /// <summary>
         /// Returns the component identifier of the component containing site p
         /// </summary>
         /// <param name="p">An integer representing one object</param>
@@ -57,17 +68,6 @@ namespace RogueSharp.Algorithms
                 p = _id[p];
             }
             return p;
-        }
-
-        /// <summary>
-        /// Are objects p and q in the same set?
-        /// </summary>
-        /// <param name="p">An integer representing one site</param>
-        /// <param name="q">An integer representing the other site</param>
-        /// <returns>true if the two sites p and q are in the same component; false otherwise</returns>
-        public bool Connected(int p, int q)
-        {
-            return Find(p) == Find(q);
         }
 
         /// <summary>

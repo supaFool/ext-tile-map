@@ -1,9 +1,11 @@
 ﻿namespace RogueSharp.Algorithms
 {
     /// <summary>
-    /// The DirectedEdge class represents a weighted edge in an edge-weighted directed graph. 
+    /// The DirectedEdge class represents a weighted edge in an edge-weighted directed graph.
     /// </summary>
-    /// <seealso href="http://algs4.cs.princeton.edu/44sp/DirectedEdge.java.html">DirectedEdge class from Princeton University's Java Algorithms</seealso>
+    /// <seealso href="http://algs4.cs.princeton.edu/44sp/DirectedEdge.java.html">
+    /// DirectedEdge class from Princeton University's Java Algorithms
+    /// </seealso>
     public class DirectedEdge
     {
         /// <summary>
@@ -37,9 +39,7 @@
         /// <summary>
         /// Returns a string that represents the current DirectedEdge
         /// </summary>
-        /// <returns>
-        /// A string that represents the current DirectedEdge
-        /// </returns>
+        /// <returns>A string that represents the current DirectedEdge</returns>
         public override string ToString()
         {
             return string.Format("From: {0}, To: {1}, Weight: {2}", From, To, Weight);

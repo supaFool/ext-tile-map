@@ -1,7 +1,8 @@
 namespace RogueSharp.MapCreation
 {
     /// <summary>
-    /// The BorderOnlyMapCreationStrategy creates a Map of the specified type by making an empty map with only the outermost border being solid walls
+    /// The BorderOnlyMapCreationStrategy creates a Map of the specified type by making an empty map
+    /// with only the outermost border being solid walls
     /// </summary>
     /// <typeparam name="T">The type of IMap that will be created</typeparam>
     public class BorderOnlyMapCreationStrategy<T> : IMapCreationStrategy<T> where T : IMap, new()
@@ -21,7 +22,8 @@ namespace RogueSharp.MapCreation
         }
 
         /// <summary>
-        /// Creates a Map of the specified type by making an empty map with only the outermost border being solid walls
+        /// Creates a Map of the specified type by making an empty map with only the outermost
+        /// border being solid walls
         /// </summary>
         /// <returns>An IMap of the specified type</returns>
         public T CreateMap()
