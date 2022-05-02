@@ -106,10 +106,10 @@ namespace RogueSharp.DiceNotation
 
         private struct ParseValues
         {
-            public string Constant;
-            public int Scalar;
-            public int Multiplicity;
             public int? Choose;
+            public string Constant;
+            public int Multiplicity;
+            public int Scalar;
 
             public ParseValues Init()
             {

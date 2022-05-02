@@ -6,7 +6,8 @@
     /// <typeparam name="T">IMap to create to</typeparam>
     public class WorldCreationStrategy<T> : IMapCreationStrategy<T> where T : IMap, new()
     {
-        readonly int _width, _height;
+        private readonly int _width, _height;
+
         /// <summary>
         /// Inits the Strategy
         /// </summary>
@@ -17,6 +18,7 @@
             this._width = width;
             this._height = height;
         }
+
         /// <summary>
         /// Runs the Map Creation Strategy
         /// </summary>
@@ -27,8 +29,6 @@
             map.Initialize(_width, _height);
             map.Clear(true, true);
             DrawSquare(map, _width, _height);
-
-
 
             return map;
         }

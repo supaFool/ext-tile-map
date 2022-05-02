@@ -14,10 +14,15 @@ namespace RogueSharp
         private readonly IMap _map;
 
         /// <summary>
-        /// Constructs a new PathFinder instance for the specified Map that will not consider diagonal movements to be valid.
+        /// Constructs a new PathFinder instance for the specified Map that will not consider
+        /// diagonal movements to be valid.
         /// </summary>
-        /// <param name="map">The Map that this PathFinder instance will run shortest path algorithms on</param>
-        /// <exception cref="ArgumentNullException">Thrown when a null map parameter is passed in</exception>
+        /// <param name="map">
+        /// The Map that this PathFinder instance will run shortest path algorithms on
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when a null map parameter is passed in
+        /// </exception>
         public PathFinder(IMap map)
         {
             if (map == null)
@@ -46,15 +51,20 @@ namespace RogueSharp
         }
 
         /// <summary>
-        /// Constructs a new PathFinder instance for the specified Map that will consider diagonal movement by using the specified diagonalCost
+        /// Constructs a new PathFinder instance for the specified Map that will consider diagonal
+        /// movement by using the specified diagonalCost
         /// </summary>
-        /// <param name="map">The Map that this PathFinder instance will run shortest path algorithms on</param>
-        /// <param name="diagonalCost">
-        /// The cost of diagonal movement compared to horizontal or vertical movement. 
-        /// Use 1.0 if you want the same cost for all movements.
-        /// On a standard cartesian map, it should be sqrt(2) (1.41)
+        /// <param name="map">
+        /// The Map that this PathFinder instance will run shortest path algorithms on
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown when a null map parameter is passed in</exception>
+        /// <param name="diagonalCost">
+        /// The cost of diagonal movement compared to horizontal or vertical movement. Use 1.0 if
+        /// you want the same cost for all movements. On a standard cartesian map, it should be
+        /// sqrt(2) (1.41)
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when a null map parameter is passed in
+        /// </exception>
         public PathFinder(IMap map, double diagonalCost)
         {
             if (map == null)
@@ -91,13 +101,19 @@ namespace RogueSharp
         }
 
         /// <summary>
-        /// Returns a shortest Path containing a list of Cells from a specified source Cell to a destination Cell
+        /// Returns a shortest Path containing a list of Cells from a specified source Cell to a
+        /// destination Cell
         /// </summary>
         /// <param name="source">The Cell which is at the start of the path</param>
         /// <param name="destination">The Cell which is at the end of the path</param>
         /// <exception cref="ArgumentNullException">Thrown when source or destination is null</exception>
-        /// <exception cref="PathNotFoundException">Thrown when there is not a path from the source to the destination</exception>
-        /// <returns>Returns a shortest Path containing a list of Cells from a specified source Cell to a destination Cell</returns>
+        /// <exception cref="PathNotFoundException">
+        /// Thrown when there is not a path from the source to the destination
+        /// </exception>
+        /// <returns>
+        /// Returns a shortest Path containing a list of Cells from a specified source Cell to a
+        /// destination Cell
+        /// </returns>
         public Path ShortestPath(ICell source, ICell destination)
         {
             Path shortestPath = TryFindShortestPath(source, destination);
@@ -111,12 +127,16 @@ namespace RogueSharp
         }
 
         /// <summary>
-        /// Returns a shortest Path containing a list of Cells from a specified source Cell to a destination Cell
+        /// Returns a shortest Path containing a list of Cells from a specified source Cell to a
+        /// destination Cell
         /// </summary>
         /// <param name="source">The Cell which is at the start of the path</param>
         /// <param name="destination">The Cell which is at the end of the path</param>
         /// <exception cref="ArgumentNullException">Thrown when source or destination is null</exception>
-        /// <returns>Returns a shortest Path containing a list of Cells from a specified source Cell to a destination Cell. If no path is found null will be returned</returns>
+        /// <returns>
+        /// Returns a shortest Path containing a list of Cells from a specified source Cell to a
+        /// destination Cell. If no path is found null will be returned
+        /// </returns>
         public Path TryFindShortestPath(ICell source, ICell destination)
         {
             if (source == null)
@@ -137,6 +157,19 @@ namespace RogueSharp
             return new Path(cells);
         }
 
+        private ICell CellFor(int index)
+        {
+            int x = index % _map.Width;
+            int y = index / _map.Width;
+
+            return _map.GetCell(x, y);
+        }
+
+        private int IndexFor(ICell cell)
+        {
+            return (cell.Y * _map.Width) + cell.X;
+        }
+
         private IEnumerable<ICell> ShortestPathCells(ICell source, ICell destination)
         {
             IEnumerable<DirectedEdge> path = DijkstraShortestPath.FindPath(_graph, IndexFor(source), IndexFor(destination));
@@ -152,19 +185,6 @@ namespace RogueSharp
                     yield return CellFor(edge.To);
                 }
             }
-        }
-
-        private int IndexFor(ICell cell)
-        {
-            return (cell.Y * _map.Width) + cell.X;
-        }
-
-        private ICell CellFor(int index)
-        {
-            int x = index % _map.Width;
-            int y = index / _map.Width;
-
-            return _map.GetCell(x, y);
         }
     }
 }

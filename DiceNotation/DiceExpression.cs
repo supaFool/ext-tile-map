@@ -11,6 +11,7 @@ namespace RogueSharp.DiceNotation
     public class DiceExpression
     {
         private readonly IList<IDiceExpressionTerm> _terms;
+
         /// <summary>
         /// Construct a new DiceExpression class with an empty list of terms
         /// </summary>
@@ -24,24 +25,17 @@ namespace RogueSharp.DiceNotation
         }
 
         /// <summary>
-        /// Add a single Die to this DiceExpression with the specified number of sides and scalar
+        /// Add a constant to this DiceExpression with the specified integer value
         /// </summary>
-        /// <param name="sides">The number of sides on the Die to add to this DiceExpression</param>
-        /// <param name="scalar">The value to multiply the result of the Roll of this Die by</param>
-        /// <returns>A DiceExpression representing the previous terms in this DiceExpression plus this newly added Die</returns>
-        public DiceExpression Die(int sides, int scalar)
+        /// <param name="value">An integer constant to add to this DiceExpression</param>
+        /// <returns>
+        /// A DiceExpression representing the previous terms in this DiceExpression plus this newly
+        /// added Constant
+        /// </returns>
+        public DiceExpression Constant(int value)
         {
-            return Dice(1, sides, scalar);
-        }
-
-        /// <summary>
-        /// Add a single Die to this DiceExpression with the specified number of sides
-        /// </summary>
-        /// <param name="sides">The number of sides on the Die to add to this DiceExpression</param>
-        /// <returns>A DiceExpression representing the previous terms in this DiceExpression plus this newly added Die</returns>
-        public DiceExpression Die(int sides)
-        {
-            return Dice(1, sides);
+            _terms.Add(new ConstantTerm(value));
+            return this;
         }
 
         /// <summary>
@@ -49,7 +43,10 @@ namespace RogueSharp.DiceNotation
         /// </summary>
         /// <param name="multiplicity">The number of Dice</param>
         /// <param name="sides">The number of sides per Die</param>
-        /// <returns>A DiceExpression representing the previous terms in this DiceExpression plus these newly added Dice</returns>
+        /// <returns>
+        /// A DiceExpression representing the previous terms in this DiceExpression plus these newly
+        /// added Dice
+        /// </returns>
         public DiceExpression Dice(int multiplicity, int sides)
         {
             return Dice(multiplicity, sides, 1, null);
@@ -61,7 +58,10 @@ namespace RogueSharp.DiceNotation
         /// <param name="multiplicity">The number of Dice</param>
         /// <param name="sides">The number of sides per Die</param>
         /// <param name="scalar">The value to multiply the result of the Roll of these Dice by</param>
-        /// <returns>A DiceExpression representing the previous terms in this DiceExpression plus these newly added Dice</returns>
+        /// <returns>
+        /// A DiceExpression representing the previous terms in this DiceExpression plus these newly
+        /// added Dice
+        /// </returns>
         public DiceExpression Dice(int multiplicity, int sides, int scalar)
         {
             return Dice(multiplicity, sides, scalar, null);
@@ -73,8 +73,14 @@ namespace RogueSharp.DiceNotation
         /// <param name="multiplicity">The number of Dice</param>
         /// <param name="sides">The number of sides per Die</param>
         /// <param name="scalar">The value to multiply the result of the Roll of these Dice by</param>
-        /// <param name="choose">Optional number of dice to choose out of the total rolled. The highest rolled Dice will be chosen.</param>
-        /// <returns>A DiceExpression representing the previous terms in this DiceExpression plus these newly added Dice</returns>
+        /// <param name="choose">
+        /// Optional number of dice to choose out of the total rolled. The highest rolled Dice will
+        /// be chosen.
+        /// </param>
+        /// <returns>
+        /// A DiceExpression representing the previous terms in this DiceExpression plus these newly
+        /// added Dice
+        /// </returns>
         public DiceExpression Dice(int multiplicity, int sides, int scalar, int? choose)
         {
             _terms.Add(new DiceTerm(multiplicity, sides, choose ?? multiplicity, scalar));
@@ -82,14 +88,56 @@ namespace RogueSharp.DiceNotation
         }
 
         /// <summary>
-        /// Add a constant to this DiceExpression with the specified integer value
+        /// Add a single Die to this DiceExpression with the specified number of sides and scalar
         /// </summary>
-        /// <param name="value">An integer constant to add to this DiceExpression</param>
-        /// <returns>A DiceExpression representing the previous terms in this DiceExpression plus this newly added Constant</returns>
-        public DiceExpression Constant(int value)
+        /// <param name="sides">The number of sides on the Die to add to this DiceExpression</param>
+        /// <param name="scalar">The value to multiply the result of the Roll of this Die by</param>
+        /// <returns>
+        /// A DiceExpression representing the previous terms in this DiceExpression plus this newly
+        /// added Die
+        /// </returns>
+        public DiceExpression Die(int sides, int scalar)
         {
-            _terms.Add(new ConstantTerm(value));
-            return this;
+            return Dice(1, sides, scalar);
+        }
+
+        /// <summary>
+        /// Add a single Die to this DiceExpression with the specified number of sides
+        /// </summary>
+        /// <param name="sides">The number of sides on the Die to add to this DiceExpression</param>
+        /// <returns>
+        /// A DiceExpression representing the previous terms in this DiceExpression plus this newly
+        /// added Die
+        /// </returns>
+        public DiceExpression Die(int sides)
+        {
+            return Dice(1, sides);
+        }
+
+        /// <summary>
+        /// Roll all of the Dice that are part of this DiceExpression, but force all of the rolls to
+        /// be the highest possible result
+        /// </summary>
+        /// <returns>
+        /// A DiceResult representing the results of this Roll. All dice should have rolled their
+        /// maximum values
+        /// </returns>
+        public DiceResult MaxRoll()
+        {
+            return Roll(new MaxRandom());
+        }
+
+        /// <summary>
+        /// Roll all of the Dice that are part of this DiceExpression, but force all of the rolls to
+        /// be the lowest possible result
+        /// </summary>
+        /// <returns>
+        /// A DiceResult representing the results of this Roll. All dice should have rolled their
+        /// minimum values
+        /// </returns>
+        public DiceResult MinRoll()
+        {
+            return Roll(new MinRandom());
         }
 
         /// <summary>
@@ -111,24 +159,6 @@ namespace RogueSharp.DiceNotation
         public DiceResult Roll()
         {
             return Roll(Singleton.DefaultRandom);
-        }
-
-        /// <summary>
-        /// Roll all of the Dice that are part of this DiceExpression, but force all of the rolls to be the lowest possible result
-        /// </summary>
-        /// <returns>A DiceResult representing the results of this Roll. All dice should have rolled their minimum values</returns>
-        public DiceResult MinRoll()
-        {
-            return Roll(new MinRandom());
-        }
-
-        /// <summary>
-        /// Roll all of the Dice that are part of this DiceExpression, but force all of the rolls to be the highest possible result
-        /// </summary>
-        /// <returns>A DiceResult representing the results of this Roll. All dice should have rolled their maximum values</returns>
-        public DiceResult MaxRoll()
-        {
-            return Roll(new MaxRandom());
         }
 
         /// <summary>

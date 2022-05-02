@@ -5,7 +5,9 @@ namespace RogueSharp.Algorithms
     /// <summary>
     /// The IndexMinPriorityQueue class represents an indexed priority queue of generic keys.
     /// </summary>
-    /// <seealso href="http://algs4.cs.princeton.edu/24pq/IndexMinPQ.java.html">IndexMinPQ class from Princeton University's Java Algorithms</seealso>
+    /// <seealso href="http://algs4.cs.princeton.edu/24pq/IndexMinPQ.java.html">
+    /// IndexMinPQ class from Princeton University's Java Algorithms
+    /// </seealso>
     /// <typeparam name="T">Type must implement IComparable interface</typeparam>
     public class IndexMinPriorityQueue<T> where T : IComparable<T>
     {
@@ -15,7 +17,8 @@ namespace RogueSharp.Algorithms
         private readonly int[] _qp;
 
         /// <summary>
-        /// Constructs an empty indexed priority queue with indices between 0 and the specified maxSize - 1
+        /// Constructs an empty indexed priority queue with indices between 0 and the specified
+        /// maxSize - 1
         /// </summary>
         /// <param name="maxSize">The maximum size of the indexed priority queue</param>
         public IndexMinPriorityQueue(int maxSize)
@@ -37,22 +40,78 @@ namespace RogueSharp.Algorithms
         public int Size { get; private set; }
 
         /// <summary>
-        /// Is the indexed priority queue empty?
+        /// Change the key associated with the specified index to the specified value
         /// </summary>
-        /// <returns>True if the indexed priority queue is empty, false otherwise</returns>
-        public bool IsEmpty()
+        /// <param name="index">The index of the key to change</param>
+        /// <param name="key">Change the key associated with the specified index to this key</param>
+        public void ChangeKey(int index, T key)
         {
-            return Size == 0;
+            _keys[index] = key;
+            Swim(_qp[index]);
+            Sink(_qp[index]);
         }
 
         /// <summary>
         /// Is the specified parameter i an index on the priority queue?
         /// </summary>
         /// <param name="i">An index to check for on the priority queue</param>
-        /// <returns>True if the specified parameter i is an index on the priority queue, false otherwise</returns>
+        /// <returns>
+        /// True if the specified parameter i is an index on the priority queue, false otherwise
+        /// </returns>
         public bool Contains(int i)
         {
             return _qp[i] != -1;
+        }
+
+        /// <summary>
+        /// Decrease the key associated with the specified index to the specified value
+        /// </summary>
+        /// <param name="index">The index of the key to decrease</param>
+        /// <param name="key">Decrease the key associated with the specified index to this key</param>
+        public void DecreaseKey(int index, T key)
+        {
+            _keys[index] = key;
+            Swim(_qp[index]);
+        }
+
+        /// <summary>
+        /// Remove the key associated with the specified index
+        /// </summary>
+        /// <param name="index">The index of the key to remove</param>
+        public void Delete(int index)
+        {
+            int i = _qp[index];
+            Exchange(i, Size--);
+            Swim(i);
+            Sink(i);
+            _keys[index] = default(T);
+            _qp[index] = -1;
+        }
+
+        /// <summary>
+        /// Removes a minimum key and returns its associated index
+        /// </summary>
+        /// <returns>An index associated with a minimum key that was removed</returns>
+        public int DeleteMin()
+        {
+            int min = _pq[1];
+            Exchange(1, Size--);
+            Sink(1);
+            _qp[min] = -1;
+            _keys[_pq[Size + 1]] = default(T);
+            _pq[Size + 1] = -1;
+            return min;
+        }
+
+        /// <summary>
+        /// Increase the key associated with the specified index to the specified value
+        /// </summary>
+        /// <param name="index">The index of the key to increase</param>
+        /// <param name="key">Increase the key associated with the specified index to this key</param>
+        public void IncreaseKey(int index, T key)
+        {
+            _keys[index] = key;
+            Sink(_qp[index]);
         }
 
         /// <summary>
@@ -67,6 +126,25 @@ namespace RogueSharp.Algorithms
             _pq[Size] = index;
             _keys[index] = key;
             Swim(Size);
+        }
+
+        /// <summary>
+        /// Is the indexed priority queue empty?
+        /// </summary>
+        /// <returns>True if the indexed priority queue is empty, false otherwise</returns>
+        public bool IsEmpty()
+        {
+            return Size == 0;
+        }
+
+        /// <summary>
+        /// Returns the key associated with the specified index
+        /// </summary>
+        /// <param name="index">The index of the key to return</param>
+        /// <returns>The key associated with the specified index</returns>
+        public T KeyAt(int index)
+        {
+            return _keys[index];
         }
 
         /// <summary>
@@ -87,84 +165,6 @@ namespace RogueSharp.Algorithms
             return _keys[_pq[1]];
         }
 
-        /// <summary>
-        /// Removes a minimum key and returns its associated index
-        /// </summary>
-        /// <returns>An index associated with a minimum key that was removed</returns>
-        public int DeleteMin()
-        {
-            int min = _pq[1];
-            Exchange(1, Size--);
-            Sink(1);
-            _qp[min] = -1;
-            _keys[_pq[Size + 1]] = default(T);
-            _pq[Size + 1] = -1;
-            return min;
-        }
-
-        /// <summary>
-        /// Returns the key associated with the specified index
-        /// </summary>
-        /// <param name="index">The index of the key to return</param>
-        /// <returns>The key associated with the specified index</returns>
-        public T KeyAt(int index)
-        {
-            return _keys[index];
-        }
-
-        /// <summary>
-        /// Change the key associated with the specified index to the specified value
-        /// </summary>
-        /// <param name="index">The index of the key to change</param>
-        /// <param name="key">Change the key associated with the specified index to this key</param>
-        public void ChangeKey(int index, T key)
-        {
-            _keys[index] = key;
-            Swim(_qp[index]);
-            Sink(_qp[index]);
-        }
-
-        /// <summary>
-        /// Decrease the key associated with the specified index to the specified value
-        /// </summary>
-        /// <param name="index">The index of the key to decrease</param>
-        /// <param name="key">Decrease the key associated with the specified index to this key</param>
-        public void DecreaseKey(int index, T key)
-        {
-            _keys[index] = key;
-            Swim(_qp[index]);
-        }
-
-        /// <summary>
-        /// Increase the key associated with the specified index to the specified value
-        /// </summary>
-        /// <param name="index">The index of the key to increase</param>
-        /// <param name="key">Increase the key associated with the specified index to this key</param>
-        public void IncreaseKey(int index, T key)
-        {
-            _keys[index] = key;
-            Sink(_qp[index]);
-        }
-
-        /// <summary>
-        /// Remove the key associated with the specified index
-        /// </summary>
-        /// <param name="index">The index of the key to remove</param>
-        public void Delete(int index)
-        {
-            int i = _qp[index];
-            Exchange(i, Size--);
-            Swim(i);
-            Sink(i);
-            _keys[index] = default(T);
-            _qp[index] = -1;
-        }
-
-        private bool Greater(int i, int j)
-        {
-            return _keys[_pq[i]].CompareTo(_keys[_pq[j]]) > 0;
-        }
-
         private void Exchange(int i, int j)
         {
             int swap = _pq[i];
@@ -174,13 +174,9 @@ namespace RogueSharp.Algorithms
             _qp[_pq[j]] = j;
         }
 
-        private void Swim(int k)
+        private bool Greater(int i, int j)
         {
-            while (k > 1 && Greater(k / 2, k))
-            {
-                Exchange(k, k / 2);
-                k = k / 2;
-            }
+            return _keys[_pq[i]].CompareTo(_keys[_pq[j]]) > 0;
         }
 
         private void Sink(int k)
@@ -198,6 +194,15 @@ namespace RogueSharp.Algorithms
                 }
                 Exchange(k, j);
                 k = j;
+            }
+        }
+
+        private void Swim(int k)
+        {
+            while (k > 1 && Greater(k / 2, k))
+            {
+                Exchange(k, k / 2);
+                k = k / 2;
             }
         }
     }

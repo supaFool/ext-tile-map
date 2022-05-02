@@ -7,7 +7,9 @@ namespace RogueSharp.Algorithms
     /// <summary>
     /// The Graph class represents an undirected graph of vertices named 0 through V - 1.
     /// </summary>
-    /// <seealso href="http://algs4.cs.princeton.edu/41undirected/Graph.java.html">Graph class from Princeton University's Java Algorithms</seealso>
+    /// <seealso href="http://algs4.cs.princeton.edu/41undirected/Graph.java.html">
+    /// Graph class from Princeton University's Java Algorithms
+    /// </seealso>
     public class Graph
     {
         private readonly LinkedList<int>[] _adjacent;
@@ -28,14 +30,14 @@ namespace RogueSharp.Algorithms
         }
 
         /// <summary>
-        /// The number of vertices in the Graph
-        /// </summary>
-        public int NumberOfVertices { get; private set; }
-
-        /// <summary>
         /// The number of edges in the Graph
         /// </summary>
         public int NumberOfEdges { get; private set; }
+
+        /// <summary>
+        /// The number of vertices in the Graph
+        /// </summary>
+        public int NumberOfVertices { get; private set; }
 
         /// <summary>
         /// Adds the undirected edge vertexSource-vertexDestination to the Graph
@@ -50,10 +52,10 @@ namespace RogueSharp.Algorithms
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the vertices adjacent to the specified vertex 
+        /// Gets an IEnumerable of the vertices adjacent to the specified vertex
         /// </summary>
         /// <param name="vertex">The vertex from which adjacent vertices will be located</param>
-        /// <returns>IEnumerable of the vertices adjacent to the specified vertex </returns>
+        /// <returns>IEnumerable of the vertices adjacent to the specified vertex</returns>
         public IEnumerable<int> Adjacent(int vertex)
         {
             return _adjacent[vertex];
@@ -62,9 +64,7 @@ namespace RogueSharp.Algorithms
         /// <summary>
         /// Returns a string that represents this Graph
         /// </summary>
-        /// <returns>
-        /// A string that represents this Graph
-        /// </returns>
+        /// <returns>A string that represents this Graph</returns>
         public override string ToString()
         {
             var formattedString = new StringBuilder();

@@ -4,12 +4,10 @@ using System.Collections.Generic;
 namespace RogueSharp.Random
 {
     /// <summary>
-    /// A class implementing IRandom which cycles through a specified series of integers each
-    /// time the Next random number is asked for.
+    /// A class implementing IRandom which cycles through a specified series of integers each time
+    /// the Next random number is asked for.
     /// </summary>
-    /// <remarks>
-    /// This class is normally used for unit tests and not production code.
-    /// </remarks>
+    /// <remarks>This class is normally used for unit tests and not production code.</remarks>
     public class KnownSeriesRandom : IRandom
     {
         private long _numberGenerated;
@@ -17,11 +15,14 @@ namespace RogueSharp.Random
 
         /// <summary>
         /// Constructs a new integer generator with the specified series of integers in an array.
-        /// When the Next method is called on this generator it will return the first integer in the series,
-        /// followed by the next integer and so on until it reaches the end of the array.
-        /// If the Next method is called once it is at the end of the array, it will start back over at the beginning.
+        /// When the Next method is called on this generator it will return the first integer in the
+        /// series, followed by the next integer and so on until it reaches the end of the array. If
+        /// the Next method is called once it is at the end of the array, it will start back over at
+        /// the beginning.
         /// </summary>
-        /// <param name="series">A known series of integers that will be returned in order from this generator</param>
+        /// <param name="series">
+        /// A known series of integers that will be returned in order from this generator
+        /// </param>
         /// <exception cref="ArgumentNullException">Thrown on null series</exception>
         public KnownSeriesRandom(params int[] series)
         {
@@ -38,13 +39,15 @@ namespace RogueSharp.Random
         }
 
         /// <summary>
-        /// Return the first integer in the series that was specified when this generator was constructed,
-        /// followed by the next integer and so on until it reaches the end of the array.
-        /// If the Next method is called once it is at the end of the array, it will start back over at the beginning.
+        /// Return the first integer in the series that was specified when this generator was
+        /// constructed, followed by the next integer and so on until it reaches the end of the
+        /// array. If the Next method is called once it is at the end of the array, it will start
+        /// back over at the beginning.
         /// </summary>
         /// <param name="maxValue">Inclusive maximum result</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when the Next integer in the series for this generator is not between 0 and the specified maxValue inclusive
+        /// Thrown when the Next integer in the series for this generator is not between 0 and the
+        /// specified maxValue inclusive
         /// </exception>
         /// <returns>The next integer in the series specified upon construction of this class</returns>
         public int Next(int maxValue)
@@ -53,15 +56,16 @@ namespace RogueSharp.Random
         }
 
         /// <summary>
-        /// Return the first integer in the series that was specified when this generator was constructed,
-        /// followed by the next integer and so on until it reaches the end of the array.
-        /// If the Next method is called once it is at the end of the array, it will start back over at the beginning.
+        /// Return the first integer in the series that was specified when this generator was
+        /// constructed, followed by the next integer and so on until it reaches the end of the
+        /// array. If the Next method is called once it is at the end of the array, it will start
+        /// back over at the beginning.
         /// </summary>
         /// <param name="minValue">Inclusive minimum result</param>
         /// <param name="maxValue">Inclusive maximum result</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when the Next integer in the series for this generator is not between 
-        /// the specified minValue and maxValue inclusive
+        /// Thrown when the Next integer in the series for this generator is not between the
+        /// specified minValue and maxValue inclusive
         /// </exception>
         /// <returns>The next integer in the series specified upon construction of this class</returns>
         public int Next(int minValue, int maxValue)
@@ -81,36 +85,19 @@ namespace RogueSharp.Random
         }
 
         /// <summary>
-        /// Saves the current state of the number generator
-        /// </summary>
-        /// <example>
-        /// If you generated three random numbers and then called Save to store the state and 
-        /// followed that up by generating 10 more numbers before calling Restore with the previously saved RandomState
-        /// the Restore method should return the generator back to the state when Save was first called.
-        /// This means that if you went on to generate 10 more numbers they would be the same 10 numbers that were
-        /// generated the first time after Save was called.
-        /// </example>
-        /// <returns>A RandomState class representing the current state of this number generator</returns>
-        public RandomState Save()
-        {
-            return new RandomState
-            {
-                NumberGenerated = _numberGenerated,
-                Seed = _series.ToArray()
-            };
-        }
-
-        /// <summary>
         /// Restores the state of the number generator based on the specified state parameter
         /// </summary>
         /// <example>
-        /// If you generated three random numbers and then called Save to store the state and 
-        /// followed that up by generating 10 more numbers before calling Restore with the previously saved RandomState
-        /// the Restore method should return the generator back to the state when Save was first called.
-        /// This means that if you went on to generate 10 more numbers they would be the same 10 numbers that were
-        /// generated the first time after Save was called.
+        /// If you generated three random numbers and then called Save to store the state and
+        /// followed that up by generating 10 more numbers before calling Restore with the
+        /// previously saved RandomState the Restore method should return the generator back to the
+        /// state when Save was first called. This means that if you went on to generate 10 more
+        /// numbers they would be the same 10 numbers that were generated the first time after Save
+        /// was called.
         /// </example>
-        /// <param name="state">The state to restore to, usually obtained from calling the Save method</param>
+        /// <param name="state">
+        /// The state to restore to, usually obtained from calling the Save method
+        /// </param>
         /// <exception cref="ArgumentNullException">Thrown on null RandomState</exception>
         public void Restore(RandomState state)
         {
@@ -125,6 +112,27 @@ namespace RogueSharp.Random
                 _series.Enqueue(i);
             }
             _numberGenerated = state.NumberGenerated;
+        }
+
+        /// <summary>
+        /// Saves the current state of the number generator
+        /// </summary>
+        /// <example>
+        /// If you generated three random numbers and then called Save to store the state and
+        /// followed that up by generating 10 more numbers before calling Restore with the
+        /// previously saved RandomState the Restore method should return the generator back to the
+        /// state when Save was first called. This means that if you went on to generate 10 more
+        /// numbers they would be the same 10 numbers that were generated the first time after Save
+        /// was called.
+        /// </example>
+        /// <returns>A RandomState class representing the current state of this number generator</returns>
+        public RandomState Save()
+        {
+            return new RandomState
+            {
+                NumberGenerated = _numberGenerated,
+                Seed = _series.ToArray()
+            };
         }
     }
 }
